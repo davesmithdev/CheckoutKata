@@ -1,13 +1,12 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace CheckoutKata.Tests
 {
     public class Checkout : ICheckout
-    {
-        private int _totalPrice;
-        private List<string> _scannedItems = new List<string>();
-        private Dictionary<string, int> _prices = new Dictionary<string, int>()
+    {        
+        private readonly List<string> _scannedItems = new List<string>();
+        private readonly Dictionary<string, int> _prices = new Dictionary<string, int>()
         {
             {"A", 50},
             {"B", 30},
@@ -21,12 +20,7 @@ namespace CheckoutKata.Tests
 
         public int GetTotalPrice()
         {
-            foreach (var item in _scannedItems)
-            {
-                _totalPrice += _prices[item];
-            }
-
-            return _totalPrice;
+            return _scannedItems.Sum(item => _prices[item]);
         }
     }
 }
