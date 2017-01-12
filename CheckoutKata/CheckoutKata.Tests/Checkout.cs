@@ -31,28 +31,47 @@ namespace CheckoutKata.Tests
 
             foreach (var priceRule in _priceRules)
             {
-                var numberOfDiscountsToApply = NumberOfDiscountsToApply(priceRule);
-                var discountPrice = DiscountPrice(priceRule);
-                var totalDiscountAmount = TotalDiscountAmount(discountPrice, numberOfDiscountsToApply);
-                totalPrice = totalPrice - totalDiscountAmount;
+                var numberOfDiscountToApply = NumberOfDiscountsToApply(priceRule);
+                var totalDiscountPrice = SingleDiscountAmount(priceRule) * numberOfDiscountToApply;
+                totalPrice -= totalDiscountPrice;
             }
 
             return totalPrice;
         }
 
-        private int TotalDiscountAmount(int discountPrice, int numberOfDiscountsToApply)
+        private int SingleDiscountAmount(KeyValuePair<string, Tuple<int, int>> priceRule)
         {
-            return discountPrice * numberOfDiscountsToApply;
-        }
-
-        private int DiscountPrice(KeyValuePair<string, Tuple<int, int>> priceRule)
-        {
-            return (_priceRules[priceRule.Key].Item1 * _prices[priceRule.Key]) - priceRule.Value.Item2;
+            return (ForHowMany(priceRule) * ItemPrice(priceRule) - ForHowMuch(priceRule));
         }
 
         private int NumberOfDiscountsToApply(KeyValuePair<string, Tuple<int, int>> priceRule)
         {
-            return _scannedItems.Count(x => x == priceRule.Key) / priceRule.Value.Item1;
+            return PriceRuleItemTotalScannedCount(priceRule) / NumberOfItemsToScanForDiscountToApply(priceRule);
+        }
+
+        private int ForHowMuch(KeyValuePair<string, Tuple<int, int>> priceRule)
+        {
+            return priceRule.Value.Item2;
+        }
+
+        private int ItemPrice(KeyValuePair<string, Tuple<int, int>> priceRule)
+        {
+            return _prices[priceRule.Key];
+        }
+
+        private int ForHowMany(KeyValuePair<string, Tuple<int, int>> priceRule)
+        {
+            return _priceRules[priceRule.Key].Item1;
+        }
+
+        private int PriceRuleItemTotalScannedCount(KeyValuePair<string, Tuple<int, int>> priceRule)
+        {
+            return _scannedItems.Count(x => x == priceRule.Key);
+        }
+
+        private int NumberOfItemsToScanForDiscountToApply(KeyValuePair<string, Tuple<int, int>> priceRule)
+        {
+            return priceRule.Value.Item1;
         }
     }
 }
