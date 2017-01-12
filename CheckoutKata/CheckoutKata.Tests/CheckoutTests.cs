@@ -55,7 +55,7 @@ namespace CheckoutKata.Tests
         }
 
         [Test]
-        public void GivenIScanItemAThreeTimes_WhenICallGetTotalPrice_TheDiscountShouldBeAppliedAndTheTotalPriceIs130()
+        public void GivenIScanItemAThreeTimes_WhenICallGetTotalPrice_TheDiscountIsAppliedAndTheTotalPriceIs130()
         {
             _checkout.Scan("A");
             _checkout.Scan("A");
@@ -65,7 +65,7 @@ namespace CheckoutKata.Tests
         }
 
         [Test]
-        public void GivenIScanItemBTwoTimes_WhenICallGetTotalPrice_TheDiscountShouldBeAppliedAndTheTotalPriceIs45()
+        public void GivenIScanItemBTwoTimes_WhenICallGetTotalPrice_TheDiscountIsAppliedAndTheTotalPriceIs45()
         {
             _checkout.Scan("B");
             _checkout.Scan("B");
@@ -74,7 +74,7 @@ namespace CheckoutKata.Tests
         }
 
          [Test]
-        public void GivenIScanItemASixTimesAndItemBTwoTimes_WhenICallGetTotalPrice_TheDiscountIsAppliedAndTotalPriceIs350()
+        public void GivenIScanItemASixTimesAndItemBFourTimes_WhenICallGetTotalPrice_MultipleDiscountsAreAppliedAndTheTotalPriceIs350()
         {
             _checkout.Scan("A");
             _checkout.Scan("A");
