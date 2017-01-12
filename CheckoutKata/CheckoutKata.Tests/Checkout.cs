@@ -26,7 +26,7 @@ namespace CheckoutKata.Tests
 
         public int GetTotalPrice()
         {
-            var prices = _productService.GetProducts();
+            var prices = _productService.GetProductsAndPrices();
 
             var totalPrice = _scannedItems.Sum(item => prices[item]);
 

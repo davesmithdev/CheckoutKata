@@ -14,13 +14,7 @@ namespace CheckoutKata.Tests
         public void Setup()
         {
             _productServiceStub = new Mock<IProductService>();
-            _productServiceStub.Setup(x => x.GetProducts()).Returns(new Dictionary<string, int>()
-            {
-                {"A", 50},
-                {"B", 30},
-                {"C", 20},
-                {"D", 15},
-            });
+            _productServiceStub.Setup(x => x.GetProductsAndPrices()).Returns(GetProductsAndPrices);
 
             _checkout = new Checkout(_productServiceStub.Object);
         }
@@ -122,12 +116,18 @@ namespace CheckoutKata.Tests
         {
             _checkout.GetTotalPrice();
 
-            _productServiceStub.Verify(x => x.GetProducts());
+            _productServiceStub.Verify(x => x.GetProductsAndPrices());
         }
-    }
 
-    public interface IProductService
-    {
-        Dictionary<string, int> GetProducts();
+        private Dictionary<string, int> GetProductsAndPrices()
+        {
+            return new Dictionary<string, int>()
+            {
+                {"A", 50},
+                {"B", 30},
+                {"C", 20},
+                {"D", 15},
+            };
+        }
     }
 }
