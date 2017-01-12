@@ -14,5 +14,16 @@ namespace CheckoutKata.Tests
 
             Assert.That(checkout.GetTotalPrice(), Is.EqualTo(50));
         }
+
+        [Test]
+        public void GivenIScanItemATwoTimes_WhenICallGetTotalPrice_TheTotalPriceIs100()
+        {
+            ICheckout checkout = new Checkout();
+
+            checkout.Scan("A");
+            checkout.Scan("A");
+
+            Assert.That(checkout.GetTotalPrice(), Is.EqualTo(100));
+        }
     }
 }
