@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using System.Collections.Generic;
+using Moq;
 using NUnit.Framework;
 
 namespace CheckoutKata.Tests
@@ -7,11 +8,21 @@ namespace CheckoutKata.Tests
     public class CheckoutTests
     {
         private ICheckout _checkout;
+        private Mock<IProductService> _productServiceStub { get; set; }
 
         [SetUp]
         public void Setup()
         {
-            _checkout = new Checkout();
+            _productServiceStub = new Mock<IProductService>();
+            _productServiceStub.Setup(x => x.GetProducts()).Returns(new Dictionary<string, int>()
+            {
+                {"A", 50},
+                {"B", 30},
+                {"C", 20},
+                {"D", 15},
+            });
+
+            _checkout = new Checkout(_productServiceStub.Object);
         }
 
         [Test]
@@ -109,8 +120,6 @@ namespace CheckoutKata.Tests
         [Test]
         public void WhenICallGetTotalPrice_ProductPricesAreReturnedFromProductService()
         {
-            Mock<IProductService> _productServiceStub = new Mock<IProductService>();
-
             _checkout.GetTotalPrice();
 
             _productServiceStub.Verify(x => x.GetProducts());
@@ -119,6 +128,6 @@ namespace CheckoutKata.Tests
 
     public interface IProductService
     {
-        void GetProducts();
+        Dictionary<string, int> GetProducts();
     }
 }
