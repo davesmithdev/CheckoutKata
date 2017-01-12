@@ -31,11 +31,28 @@ namespace CheckoutKata.Tests
 
             foreach (var priceRule in _priceRules)
             {
-                var numberOfDiscountsToApply = _scannedItems.Count(x => x == priceRule.Key) / priceRule.Value.Item1;
-                var discountPrice = (_priceRules[priceRule.Key].Item1 *  _prices[priceRule.Key]) - priceRule.Value.Item2;
+                var numberOfDiscountsToApply = NumberOfDiscountsToApply(priceRule);
+                var discountPrice = DiscountPrice(priceRule);
+                var totalDiscountAmount = TotalDiscountAmount(discountPrice, numberOfDiscountsToApply);
+                totalPrice = totalPrice - totalDiscountAmount;
             }
 
             return totalPrice;
+        }
+
+        private int TotalDiscountAmount(int discountPrice, int numberOfDiscountsToApply)
+        {
+            return discountPrice * numberOfDiscountsToApply;
+        }
+
+        private int DiscountPrice(KeyValuePair<string, Tuple<int, int>> priceRule)
+        {
+            return (_priceRules[priceRule.Key].Item1 * _prices[priceRule.Key]) - priceRule.Value.Item2;
+        }
+
+        private int NumberOfDiscountsToApply(KeyValuePair<string, Tuple<int, int>> priceRule)
+        {
+            return _scannedItems.Count(x => x == priceRule.Key) / priceRule.Value.Item1;
         }
     }
 }
