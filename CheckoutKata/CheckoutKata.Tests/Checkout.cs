@@ -21,7 +21,12 @@ namespace CheckoutKata.Tests
 
         public int GetTotalPrice()
         {
-            return _scannedItems.Sum(item => _prices[item]);
+            var totalPrice = _scannedItems.Sum(item => _prices[item]);
+
+            if (_scannedItems.Count(i => i == "A") == 3)
+                totalPrice -= 20;
+
+            return totalPrice;
         }
     }
 }
