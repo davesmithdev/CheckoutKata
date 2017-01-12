@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
-using NUnit.Framework.Constraints;
+﻿using NUnit.Framework;
 
 namespace CheckoutKata.Tests
 {
@@ -19,23 +14,5 @@ namespace CheckoutKata.Tests
 
             Assert.That(checkout.GetTotalPrice(), Is.EqualTo(50));
         }
-    }
-
-    public class Checkout : ICheckout
-    {
-        public void Scan(string item)
-        {            
-        }
-
-        public int GetTotalPrice()
-        {
-            return 50;
-        }
-    }
-
-    public interface ICheckout
-    {
-        void Scan(string item);
-        int GetTotalPrice();
     }
 }
