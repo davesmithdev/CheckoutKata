@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace CheckoutKata.Tests
@@ -6,6 +7,12 @@ namespace CheckoutKata.Tests
     {
         private int _totalPrice;
         private List<string> _scannedItems = new List<string>();
+        private Dictionary<string, int> _prices = new Dictionary<string, int>()
+        {
+            {"A", 50},
+            {"B", 30},
+            {"C", 20}
+        };
 
         public void Scan(string item)
         {
@@ -16,7 +23,7 @@ namespace CheckoutKata.Tests
         {
             foreach (var item in _scannedItems)
             {
-                _totalPrice += (item == "A") ? 50 : 30;
+                _totalPrice += _prices[item];
             }
 
             return _totalPrice;
