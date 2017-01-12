@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 
 namespace CheckoutKata.Tests
 {
@@ -104,5 +105,20 @@ namespace CheckoutKata.Tests
 
             Assert.That(_checkout.GetTotalPrice(), Is.EqualTo(230));
         }
+
+        [Test]
+        public void WhenICallGetTotalPrice_ProductPricesAreReturnedFromProductService()
+        {
+            Mock<IProductService> _productServiceStub = new Mock<IProductService>();
+
+            _checkout.GetTotalPrice();
+
+            _productServiceStub.Verify(x => x.GetProducts());
+        }
+    }
+
+    public interface IProductService
+    {
+        void GetProducts();
     }
 }
