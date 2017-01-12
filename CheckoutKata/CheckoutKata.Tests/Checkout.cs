@@ -10,7 +10,8 @@ namespace CheckoutKata.Tests
         {
             {"A", 50},
             {"B", 30},
-            {"C", 20}
+            {"C", 20},
+            {"D", 15}
         };
 
         public void Scan(string item)
