@@ -119,6 +119,15 @@ namespace CheckoutKata.Tests
             _productServiceStub.Verify(x => x.GetProductsAndPrices());
         }
 
+        [Test]
+        public void WhenICallGetTotalPrice_PriceRulesAreReturnedFromPriceRuleService()
+        {
+            Mock<IPriceRuleService> priceRuleServiceStub = new Mock<IPriceRuleService>();
+            _checkout.GetTotalPrice();
+
+            priceRuleServiceStub.Verify(x => x.GetPriceRules());
+        }
+
         private Dictionary<string, int> GetProductsAndPrices()
         {
             return new Dictionary<string, int>()
@@ -129,5 +138,10 @@ namespace CheckoutKata.Tests
                 {"D", 15},
             };
         }
+    }
+
+    public interface IPriceRuleService
+    {
+        void GetPriceRules();
     }
 }
