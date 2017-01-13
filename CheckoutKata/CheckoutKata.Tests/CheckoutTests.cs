@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 
@@ -9,14 +10,18 @@ namespace CheckoutKata.Tests
     {
         private ICheckout _checkout;
         private Mock<IProductService> _productServiceStub { get; set; }
+        private Mock<IPriceRuleService> _priceRuleServiceStub { get; set; }
 
         [SetUp]
         public void Setup()
         {
             _productServiceStub = new Mock<IProductService>();
-            _productServiceStub.Setup(x => x.GetProductsAndPrices()).Returns(GetProductsAndPrices);
+            _priceRuleServiceStub = new Mock<IPriceRuleService>();
 
-            _checkout = new Checkout(_productServiceStub.Object);
+            _productServiceStub.Setup(x => x.GetProductsAndPrices()).Returns(GetProductsAndPrices);
+            _priceRuleServiceStub.Setup(x => x.GetPriceRules()).Returns(GetPriceRules);
+
+            _checkout = new Checkout(_productServiceStub.Object, _priceRuleServiceStub.Object);
         }
 
         [Test]
@@ -122,10 +127,9 @@ namespace CheckoutKata.Tests
         [Test]
         public void WhenICallGetTotalPrice_PriceRulesAreReturnedFromPriceRuleService()
         {
-            Mock<IPriceRuleService> priceRuleServiceStub = new Mock<IPriceRuleService>();
             _checkout.GetTotalPrice();
 
-            priceRuleServiceStub.Verify(x => x.GetPriceRules());
+            _priceRuleServiceStub.Verify(x => x.GetPriceRules());
         }
 
         private Dictionary<string, int> GetProductsAndPrices()
@@ -138,10 +142,19 @@ namespace CheckoutKata.Tests
                 {"D", 15},
             };
         }
+
+        private Dictionary<string, Tuple<int, int>> GetPriceRules()
+        {
+            return new Dictionary<string, Tuple<int, int>>()
+            {
+                {"A", new Tuple<int, int>(3, 130)},
+                {"B", new Tuple<int, int>(2, 45)}
+            };
+        }
     }
 
     public interface IPriceRuleService
     {
-        void GetPriceRules();
+        Dictionary<string, Tuple<int, int>> GetPriceRules();
     }
 }
